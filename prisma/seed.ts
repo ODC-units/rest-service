@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // create two dummy articles
-  const shelter = await prisma.shelter.upsert({
+  /*const shelter = await prisma.shelter.upsert({
     where: {id: 1},
     update: {},
     create: {
@@ -16,9 +16,9 @@ async function main() {
       latitude: 1,
       longitude: 1,
     }
-  });
+  });*/
 
-  console.log({ shelter });
+  //console.log({ shelter });
 }
 
 // execute the main function
