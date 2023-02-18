@@ -18,7 +18,7 @@ import { AuthorizedRequest } from '../types';
 export class AuthGuard implements CanActivate {
   private readonly logger = new Logger(AuthGuard.name);
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   /**
    * Check if the user is authenticated and enrich the request with the decoded token
@@ -35,6 +35,8 @@ export class AuthGuard implements CanActivate {
     }
 
     const token = this.authService.getIdToken(request);
+
+
 
     if (!token) {
       this.logger.error('No token found in request');

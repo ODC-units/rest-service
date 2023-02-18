@@ -24,4 +24,15 @@ export class ShelterService {
       throw new InternalServerErrorException();
     }
   }
+
+  async findAll(): Promise<ShelterEntity[]> {
+    try {
+      const shelters = await this.prismaService.shelter.findMany();
+
+      return shelters.map((shelter) => new ShelterEntity(shelter));
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
 }
