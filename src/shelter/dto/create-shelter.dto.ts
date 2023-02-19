@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Shelter } from '@prisma/client';
 
-export class CreateShelterDto implements Omit<Shelter, 'createdAt' | 'updatedAt'> {
+export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
 
   @ApiProperty({
     description: 'The ID of the shelter',
@@ -68,4 +68,10 @@ export class CreateShelterDto implements Omit<Shelter, 'createdAt' | 'updatedAt'
     example: '46.227638',
   })
   longitude: number;
+
+  @ApiProperty({
+    description: 'The version of the shelter',
+    example: '1',
+  })
+  version: number;
 }

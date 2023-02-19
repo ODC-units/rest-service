@@ -11,15 +11,16 @@ export class ShelterController {
 
 
   /**
-   * POST /api/v1/users - Create a user
-   * @param {CreateShelterDto} createShelterDto - The user to create
-   * @return {Promise<UserEntity>} The created user
+   * POST /api/v1/shelter - Create a shelter
+   * @param {CreateShelterDto} createShelterDto - The shelter to create
+   * @return {Promise<UserEntity>} The created shelter
    */
-  @Post()
+  @Post('shelter')
   @ApiCreatedResponse({
     type: ShelterEntity,
     description: 'The created shelter',
   })
+  @UseGuards(AuthGuard)
   async create(@Body() createShelterDto: CreateShelterDto): Promise<ShelterEntity> {
     return this.shelterService.create(createShelterDto);
   }
@@ -28,6 +29,12 @@ export class ShelterController {
   @UseGuards(AuthGuard)
   async findAll(): Promise<ShelterEntity[]> {
     return this.shelterService.findAll();
+  }
+
+  @Get('shelter/:id')
+  @UseGuards(AuthGuard)
+  async findOne(@Param('id') id: string): Promise<ShelterEntity> {
+    return this.shelterService.findOne(id);
   }
 
 }

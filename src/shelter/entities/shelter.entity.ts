@@ -10,13 +10,13 @@ export class ShelterEntity implements Shelter {
   id: string;
 
   @ApiProperty({
-    description: 'The description of the shelter',
+    description: 'The shelter name',
     example: 'john.doe@test.com',
   })
   name: string;
 
   @ApiProperty({
-    description: 'The first name of the user',
+    description: 'The shelter description',
     example: 'John',
   })
   description: string;
@@ -44,6 +44,6 @@ export class ShelterEntity implements Shelter {
   beds: number;
   url: string;
   photo: string;
+  version: number;
   createdAt: Date;
-  updatedAt: Date;
 }

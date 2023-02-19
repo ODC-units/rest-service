@@ -19,13 +19,22 @@ model Shelter {
   photo       String
   latitude    Float
   longitude   Float
+  version     Int
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
-model Version {
-  id        Int      @id @default(autoincrement())
-  userid    Int
-  shelteris Int
-  createdAt DateTime @default(now())
+model ShelterArchive {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  province    String
+  region      String
+  country     String
+  beds        Int
+  url         String
+  photo       String
+  latitude    Float
+  longitude   Float
+  version     Int
+  createdAt   DateTime @default(now())
 }

@@ -35,4 +35,18 @@ export class ShelterService {
     }
   }
 
+  async findOne(id: string): Promise<ShelterEntity> {
+    try {
+      const shelter = await this.prismaService.shelter.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      return new ShelterEntity(shelter);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
 }
