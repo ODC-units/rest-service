@@ -43,6 +43,9 @@ export class ShelterService {
         },
       });
 
+      const shelterEntity = new ShelterEntity(shelter);
+      const shelterJsonLd = shelterEntity.toJsonLd();
+
       return new ShelterEntity(shelter);
     } catch (error) {
       throw new InternalServerErrorException();

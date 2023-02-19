@@ -26,13 +26,13 @@ export class AuthService {
 
     const bearerToken = request.get('Authorization');
 
-    console.log(bearerToken);
-
     if (!bearerToken) {
       return null;
     }
 
     const token = bearerToken.split(' ')[1];
+
+    console.log(token);
 
     if (!token) {
       return null;

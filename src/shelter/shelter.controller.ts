@@ -3,7 +3,7 @@ import { ShelterService } from './shelter.service';
 import { CreateShelterDto } from './dto/create-shelter.dto';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { ShelterEntity } from './entities/shelter.entity';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('v1')
 export class ShelterController {
@@ -20,18 +20,21 @@ export class ShelterController {
     type: ShelterEntity,
     description: 'The created shelter',
   })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   async create(@Body() createShelterDto: CreateShelterDto): Promise<ShelterEntity> {
     return this.shelterService.create(createShelterDto);
   }
 
   @Get('shelters')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   async findAll(): Promise<ShelterEntity[]> {
     return this.shelterService.findAll();
   }
 
   @Get('shelter/:id')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   async findOne(@Param('id') id: string): Promise<ShelterEntity> {
     return this.shelterService.findOne(id);

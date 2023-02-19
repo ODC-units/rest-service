@@ -36,8 +36,6 @@ export class AuthGuard implements CanActivate {
 
     const token = this.authService.getIdToken(request);
 
-
-
     if (!token) {
       this.logger.error('No token found in request');
       throw new UnauthorizedException();
