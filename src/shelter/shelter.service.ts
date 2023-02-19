@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateShelterDto } from './dto/create-shelter.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ShelterEntity } from './entities/shelter.entity';
+import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
 
 @Injectable()
 export class ShelterService {
@@ -25,17 +26,21 @@ export class ShelterService {
     }
   }
 
-  async findAll(): Promise<ShelterEntity[]> {
+  async findAll(): Promise<ShelterEntityJsonLd> {
     try {
       const shelters = await this.prismaService.shelter.findMany();
 
-      return shelters.map((shelter) => new ShelterEntity(shelter));
+      console.log(shelters);
+
+
+      //return shelters.map((shelter) => new ShelterEntity(shelter));
+      return new ShelterEntityJsonLd(shelters);
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async findOne(id: string): Promise<ShelterEntity> {
+  async findOne(id: string): Promise<ShelterEntityJsonLd> {
     try {
       const shelter = await this.prismaService.shelter.findUnique({
         where: {
@@ -43,11 +48,9 @@ export class ShelterService {
         },
       });
 
-      const shelterEntity = new ShelterEntity(shelter);
-      const shelterJsonLd = shelterEntity.toJsonLd();
-
-      return new ShelterEntity(shelter);
+      return new ShelterEntityJsonLd([shelter]);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
