@@ -20,6 +20,7 @@ model Shelter {
   latitude    Float
   longitude   Float
   version     Int
+  author      String
   createdAt   DateTime @default(now())
 }
 
@@ -36,5 +37,6 @@ model ShelterArchive {
   latitude    Float
   longitude   Float
   version     Int
+  author      String
   createdAt   DateTime @default(now())
 }

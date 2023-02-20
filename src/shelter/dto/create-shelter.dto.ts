@@ -74,4 +74,10 @@ export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
     example: '1',
   })
   version: number;
+
+  @ApiProperty({
+    description: 'The author of the shelter',
+    example: 'John Doe',
+  })
+  author: string;
 }

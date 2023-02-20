@@ -7,6 +7,7 @@ class ShelterEntityJsonLdHelper {
     this['@type'] = 'schema:CreativeWork';
     this['geojson:properties'] = {
       '@type': 'schema:Accommodation',
+      'schema:identifier': shelter.id,
       'schema:name': shelter.name,
       'schema:description': shelter.description,
       'schema:address': {
@@ -27,12 +28,14 @@ class ShelterEntityJsonLdHelper {
       'geojson:type': 'geojson:Point',
       'geojson:coordinates': [shelter.latitude, shelter.longitude],
     };
+    this['schema:author'] = shelter.author;
     this['schema:dateCreated'] = shelter.createdAt;
   }
 
   '@type': string;
   'geojson:properties': {
     '@type': string;
+    'schema:identifier': string;
     'schema:name': string;
     'schema:description': string;
     'schema:address': {
@@ -53,6 +56,7 @@ class ShelterEntityJsonLdHelper {
     'geojson:type': string;
     'geojson:coordinates': number[];
   };
+  'schema:author': string;
   'schema:dateCreated': Date;
 }
 

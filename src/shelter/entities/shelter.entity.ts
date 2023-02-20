@@ -40,5 +40,6 @@ export class ShelterEntity implements Shelter {
   url: string;
   photo: string;
   version: number;
+  author: string;
   createdAt: Date;
 }
