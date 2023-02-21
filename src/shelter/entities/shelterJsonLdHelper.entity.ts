@@ -1,5 +1,7 @@
 import { Type } from 'class-transformer';
 import { ShelterEntity } from './shelter.entity';
+import { ServiceEntity } from './service.entity';
+import { ServiceEntityJsonLd } from './serviceJsonLd.entity';
 
 class ShelterEntityJsonLdHelper {
   constructor(shelter: ShelterEntity) {
@@ -13,6 +15,9 @@ class ShelterEntityJsonLdHelper {
         'schema:addressLocality': shelter.province,
         'schema:addressRegion': shelter.region,
       },
+      'schema:amenityFeature': shelter.amenities.map(
+        (service) => new ServiceEntityJsonLd(service),
+      ),
       'schema:url': shelter.url,
     };
     this['geojson:geometry'] = {
@@ -33,6 +38,7 @@ class ShelterEntityJsonLdHelper {
       'schema:addressLocality': string;
       'schema:addressRegion': string;
     };
+    'schema:amenityFeature': ServiceEntityJsonLd[];
     'schema:url': string;
   };
   'geojson:geometry': {

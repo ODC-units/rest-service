@@ -8,20 +8,7 @@ datasource db {
 }
 
 model Shelter {
-  id             String           @id @default(cuid())
-  name           String
-  province       String
-  region         String
-  url            String
-  latitude       Float
-  longitude      Float
-  author         String
-  createdAt      DateTime         @default(now())
-  ShelterService ShelterService[]
-}
-
-model ShelterArchive {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   name      String
   province  String
   region    String
@@ -29,12 +16,13 @@ model ShelterArchive {
   latitude  Float
   longitude Float
   author    String
-  createdAt DateTime @default(now())
+  createdAt DateTime         @default(now())
+  amenities ShelterService[]
 }
 
 model Service {
-  name           String           @id
-  ShelterService ShelterService[]
+  id        String           @id
+  amenities ShelterService[]
 }
 
 model ShelterService {
@@ -42,7 +30,7 @@ model ShelterService {
   serviceId String
   value     String
   shelter   Shelter @relation(fields: [shelterId], references: [id])
-  service   Service @relation(fields: [serviceId], references: [name])
+  service   Service @relation(fields: [serviceId], references: [id])
 
   @@id([shelterId, serviceId])
 }

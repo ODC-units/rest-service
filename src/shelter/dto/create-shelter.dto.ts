@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Shelter } from '@prisma/client';
+import { Shelter, ShelterService } from '@prisma/client';
 
 export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
   @ApiProperty({
@@ -25,6 +25,12 @@ export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
     example: 'Veneto',
   })
   region: string;
+
+  @ApiProperty({
+    description: 'The services offered by the shelter',
+    example: '[{ "serviceId": "Beds", "value": "true"}]',
+  })
+  amenities: ShelterService[];
 
   @ApiProperty({
     description: 'The url of the website of the shelter',

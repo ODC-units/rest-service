@@ -30,6 +30,7 @@ export class ShelterEntity implements Shelter {
   province: string;
   region: string;
   url: string;
+  amenities: ShelterService[];
   author: string;
   createdAt: Date;
 }

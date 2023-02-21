@@ -16,8 +16,18 @@ export class ShelterService {
    */
   async create(createShelterDto: CreateShelterDto): Promise<ShelterEntity> {
     try {
+      const amenities = createShelterDto.amenities.map((shelterService) => ({
+        serviceId: shelterService.serviceId,
+        value: shelterService.value,
+      }));
+
       const createdShelter = await this.prismaService.shelter.create({
-        data: createShelterDto,
+        data: {
+          ...createShelterDto,
+          amenities: {
+            create: amenities,
+          },
+        },
       });
 
       return new ShelterEntity(createdShelter);
@@ -29,7 +39,11 @@ export class ShelterService {
 
   async findAll(): Promise<ShelterEntityJsonLd> {
     try {
-      const shelters = await this.prismaService.shelter.findMany();
+      const shelters = await this.prismaService.shelter.findMany({
+        include: {
+          amenities: true,
+        },
+      });
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
@@ -42,6 +56,9 @@ export class ShelterService {
       const shelter = await this.prismaService.shelter.findUnique({
         where: {
           id,
+        },
+        include: {
+          amenities: true,
         },
       });
 
