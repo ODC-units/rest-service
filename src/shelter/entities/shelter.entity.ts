@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Shelter } from '@prisma/client';
+import { Shelter, ShelterService } from '@prisma/client';
 import { ShelterEntityJsonLd } from './shelterJsonLd.entity';
 
 export class ShelterEntity implements Shelter {
@@ -16,12 +16,6 @@ export class ShelterEntity implements Shelter {
   name: string;
 
   @ApiProperty({
-    description: 'The shelter description',
-    example: 'John',
-  })
-  description: string;
-
-  @ApiProperty({
     description: 'The latitude of the shelter',
     example: 46.227638,
   })
@@ -35,11 +29,7 @@ export class ShelterEntity implements Shelter {
   // TODO: Add the rest of the properties
   province: string;
   region: string;
-  country: string;
-  beds: number;
   url: string;
-  photo: string;
-  version: number;
   author: string;
   createdAt: Date;
 }

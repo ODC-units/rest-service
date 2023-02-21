@@ -6,7 +6,7 @@ import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
 
 @Injectable()
 export class ShelterService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   /**
    * Create a shelter
@@ -22,6 +22,7 @@ export class ShelterService {
 
       return new ShelterEntity(createdShelter);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -30,10 +31,6 @@ export class ShelterService {
     try {
       const shelters = await this.prismaService.shelter.findMany();
 
-      console.log(shelters);
-
-
-      //return shelters.map((shelter) => new ShelterEntity(shelter));
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
       throw new InternalServerErrorException();
@@ -50,9 +47,7 @@ export class ShelterService {
 
       return new ShelterEntityJsonLd([shelter]);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
-
 }

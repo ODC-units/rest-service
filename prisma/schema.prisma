@@ -8,35 +8,41 @@ datasource db {
 }
 
 model Shelter {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  province    String
-  region      String
-  country     String
-  beds        Int
-  url         String
-  photo       String
-  latitude    Float
-  longitude   Float
-  version     Int
-  author      String
-  createdAt   DateTime @default(now())
+  id             String           @id @default(cuid())
+  name           String
+  province       String
+  region         String
+  url            String
+  latitude       Float
+  longitude      Float
+  author         String
+  createdAt      DateTime         @default(now())
+  ShelterService ShelterService[]
 }
 
 model ShelterArchive {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  province    String
-  region      String
-  country     String
-  beds        Int
-  url         String
-  photo       String
-  latitude    Float
-  longitude   Float
-  version     Int
-  author      String
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  province  String
+  region    String
+  url       String
+  latitude  Float
+  longitude Float
+  author    String
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  name           String           @id
+  ShelterService ShelterService[]
+}
+
+model ShelterService {
+  shelterId String
+  serviceId String
+  value     String
+  shelter   Shelter @relation(fields: [shelterId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [name])
+
+  @@id([shelterId, serviceId])
 }
