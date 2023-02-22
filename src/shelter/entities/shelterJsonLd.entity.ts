@@ -9,15 +9,15 @@ class ShelterEntityJsonLd {
       schema: 'http://schema.org/',
       geojson: 'https://purl.org/geojson/vocab#',
     };
-    this['dc:title'] = 'Lista rifugi';
-    this['dc:description'] =
-      'Questo file contiene la lista dei rifugi correnti presenti nel database';
-    this['dc:creator'] = 'hutmap.org';
+    this['dc:title'] = 'Shelter List';
+    this['dc:description'] = 'List of ' + shelters.length + ' shelters';
+    this['dc:creator'] = 'openshelterapi.com';
     this['dc:date'] = new Date();
     this['dc:format'] = '.geojson';
-    this['dc:language'] = 'it';
-    this['dc:source'] = 'hutmap.org';
-    this['dc:rights'] = 'CC BY-SA 4.0';
+    this['dc:language'] = 'en';
+    this['dc:source'] = 'openshelterapi.com';
+    this['dc:rights'] =
+      'Open Data Commons Open Database License (ODbL) - https://opendatacommons.org/licenses/odbl/1.0/';
     this['@type'] = 'geojson:FeatureCollection';
     this['geojson:features'] = shelters.map(
       (shelter) => new ShelterEntityJsonLdHelper(shelter),
