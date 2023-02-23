@@ -1,6 +1,5 @@
-import { Type } from 'class-transformer';
+// eslint-disable-next-line import/no-cycle
 import { ServiceEntity } from './service.entity';
-import { ShelterEntityJsonLdHelper } from './shelterJsonLdHelper.entity';
 
 class ServiceEntityJsonLd {
   constructor(service: ServiceEntity) {
@@ -11,8 +10,11 @@ class ServiceEntityJsonLd {
   }
 
   '@type': string;
+
   'schema:name': string;
+
   'schema:value': string;
+
   'schema:url': string;
 }
 

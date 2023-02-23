@@ -9,6 +9,7 @@ import { AuthConfig } from './config/auth.config';
 @Injectable()
 export class AuthService {
   private readonly firebaseApp: admin.app.App;
+
   private readonly logger = new Logger(AuthService.name);
 
   constructor() {

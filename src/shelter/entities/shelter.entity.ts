@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Shelter, ShelterService } from '@prisma/client';
-import { ShelterEntityJsonLd } from './shelterJsonLd.entity';
 
 export class ShelterEntity implements Shelter {
   @ApiProperty({
@@ -20,6 +19,7 @@ export class ShelterEntity implements Shelter {
     example: 46.227638,
   })
   latitude: number;
+
   longitude: number;
 
   constructor(partial: Partial<ShelterEntity>) {
@@ -27,9 +27,14 @@ export class ShelterEntity implements Shelter {
   }
 
   province: string;
+
   region: string;
+
   url: string;
+
   amenities: ShelterService[];
+
   author: string;
+
   createdAt: Date;
 }

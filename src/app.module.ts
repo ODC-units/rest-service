@@ -1,14 +1,17 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { AuthModule } from './auth/auth.module';
-import { CorsMiddleware } from './middleware/middleware';
 
 @Module({
-  imports: [PrismaModule, ShelterModule, AuthModule],
+  imports: [
+    PrismaModule,
+    ShelterModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CorsMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

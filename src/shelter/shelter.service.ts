@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateShelterDto } from './dto/create-shelter.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateShelterDto } from './dto/create-shelter.dto';
 import { ShelterEntity } from './entities/shelter.entity';
 import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
 
@@ -25,7 +25,6 @@ export class ShelterService {
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -63,7 +62,6 @@ export class ShelterService {
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -90,6 +88,7 @@ export class ShelterService {
         },
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const createdShelterArchive =
         await this.prismaService.shelterArchive.create({
           data: {
@@ -104,7 +103,6 @@ export class ShelterService {
 
       return new ShelterEntity(createdShelter);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -114,14 +112,12 @@ export class ShelterService {
     updateShelterDto: CreateShelterDto,
   ): Promise<ShelterEntity> {
     try {
-      console.log(updateShelterDto);
       const amenities = updateShelterDto.amenities.map((shelterService) => ({
         serviceId: shelterService.serviceId,
         value: shelterService.value,
       }));
 
-      console.log(updateShelterDto.id);
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [deleted, updatedShelter, created] =
         await this.prismaService.$transaction([
           this.prismaService.shelterService.deleteMany({
@@ -153,7 +149,6 @@ export class ShelterService {
 
       return new ShelterEntity(updatedShelter);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }

@@ -1,6 +1,5 @@
-import { Type } from 'class-transformer';
 import { ShelterEntity } from './shelter.entity';
-import { ServiceEntity } from './service.entity';
+// eslint-disable-next-line import/no-cycle
 import { ServiceEntityJsonLd } from './serviceJsonLd.entity';
 
 class ShelterEntityJsonLdHelper {
@@ -29,6 +28,7 @@ class ShelterEntityJsonLdHelper {
   }
 
   '@type': string;
+
   'geojson:properties': {
     '@type': string;
     'schema:identifier': string;
@@ -41,11 +41,14 @@ class ShelterEntityJsonLdHelper {
     'schema:amenityFeature': ServiceEntityJsonLd[];
     'schema:url': string;
   };
+
   'geojson:geometry': {
     'geojson:type': string;
     'geojson:coordinates': number[];
   };
+
   'schema:author': string;
+
   'schema:dateCreated': Date;
 }
 

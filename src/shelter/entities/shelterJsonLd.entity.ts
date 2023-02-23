@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer';
 import { ShelterEntity } from './shelter.entity';
+// eslint-disable-next-line import/no-cycle
 import { ShelterEntityJsonLdHelper } from './shelterJsonLdHelper.entity';
 
 class ShelterEntityJsonLd {
@@ -10,7 +10,7 @@ class ShelterEntityJsonLd {
       geojson: 'https://purl.org/geojson/vocab#',
     };
     this['dc:title'] = 'Shelter List';
-    this['dc:description'] = 'List of ' + shelters.length + ' shelters';
+    this['dc:description'] = `List of ${shelters.length} shelters`;
     this['dc:creator'] = 'openshelterapi.com';
     this['dc:date'] = new Date();
     this['dc:format'] = '.geojson';
@@ -29,15 +29,25 @@ class ShelterEntityJsonLd {
     schema: string;
     geojson: string;
   };
+
   'dc:title': string;
+
   'dc:description': string;
+
   'dc:creator': string;
+
   'dc:date': Date;
+
   'dc:format': string;
+
   'dc:language': string;
+
   'dc:source': string;
+
   'dc:rights': string;
+
   '@type': string;
+
   'geojson:features': ShelterEntityJsonLdHelper[];
 }
 
