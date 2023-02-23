@@ -34,7 +34,6 @@ export class ShelterController {
     @Body() createShelterDto: CreateShelterDto,
     @MyId() id: string,
   ): Promise<ShelterEntity> {
-    console.log(id);
     return this.shelterService.create({
       ...createShelterDto,
       author: id,

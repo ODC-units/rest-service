@@ -1,12 +1,21 @@
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 import { ServiceAccount } from 'firebase-admin';
 import { CommonAuthConfig } from '../types';
 
 export class AuthConfig {
-  static get serviceAccount(): ServiceAccount {
+  static async getServiceAccount(): Promise<ServiceAccount> {
+    const client = new SecretManagerServiceClient();
+    const [versionData] = await client.accessSecretVersion({
+      name: `projects/opendata-units/secrets/firebase-credentials/versions/latest`,
+    });
+
+    const secret = versionData.payload?.data?.toString() || '';
+    const credentials = JSON.parse(secret);
+
     return {
-      projectId: process.env.FIREBASE_PROJECT_ID || '',
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL || '',
-      privateKey: process.env.FIREBASE_PRIVATE_KEY || '',
+      projectId: credentials.project_id,
+      clientEmail: credentials.client_email,
+      privateKey: credentials.private_key,
     };
   }
 

@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Request } from 'express';
 import { AuthConfig } from './config/auth.config';
 
@@ -8,14 +8,16 @@ import { AuthConfig } from './config/auth.config';
  */
 @Injectable()
 export class AuthService {
-  private readonly firebaseApp: admin.app.App;
-
-  private readonly logger = new Logger(AuthService.name);
+  private firebaseApp: admin.app.App;
 
   constructor() {
-    this.firebaseApp = admin.initializeApp({
-      credential: admin.credential.cert(AuthConfig.serviceAccount),
-    });
+    (async () => {
+      const serviceAccount = await AuthConfig.getServiceAccount();
+
+      this.firebaseApp = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+    })();
   }
 
   /**
@@ -24,7 +26,6 @@ export class AuthService {
    * @return {string} The ID token extracted from the request
    */
   getIdToken(request: Request): string | null {
-
     const bearerToken = request.get('Authorization');
 
     if (!bearerToken) {
@@ -32,8 +33,6 @@ export class AuthService {
     }
 
     const token = bearerToken.split(' ')[1];
-
-    console.log(token);
 
     if (!token) {
       return null;
