@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Service {
+  id                    String                  @id
+  amenities             ShelterService[]
+  ShelterServiceArchive ShelterServiceArchive[]
+}
+
 model Shelter {
   id        String           @id @default(cuid())
   name      String
@@ -20,11 +26,6 @@ model Shelter {
   amenities ShelterService[]
 }
 
-model Service {
-  id        String           @id
-  amenities ShelterService[]
-}
-
 model ShelterService {
   shelterId String
   serviceId String
@@ -33,4 +34,30 @@ model ShelterService {
   service   Service @relation(fields: [serviceId], references: [id])
 
   @@id([shelterId, serviceId])
+}
+
+model ShelterArchive {
+  id        String                  @default(cuid())
+  name      String
+  province  String
+  region    String
+  url       String
+  latitude  Float
+  longitude Float
+  author    String
+  createdAt DateTime                @default(now())
+  amenities ShelterServiceArchive[]
+
+  @@id([id, createdAt])
+}
+
+model ShelterServiceArchive {
+  shelterId String
+  date      DateTime
+  serviceId String
+  value     String
+  shelter   ShelterArchive @relation(fields: [shelterId, date], references: [id, createdAt])
+  service   Service        @relation(fields: [serviceId], references: [id])
+
+  @@id([shelterId, date, serviceId])
 }

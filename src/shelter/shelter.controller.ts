@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ShelterService } from './shelter.service';
 import { CreateShelterDto } from './dto/create-shelter.dto';
@@ -24,11 +25,6 @@ import { MyId } from 'src/auth/decorators/current-user';
 export class ShelterController {
   constructor(private readonly shelterService: ShelterService) {}
 
-  /**
-   * POST /api/v1/shelter - Create a shelter
-   * @param {CreateShelterDto} createShelterDto - The shelter to create
-   * @return {Promise<UserEntity>} The created shelter
-   */
   @Post()
   @ApiCreatedResponse({
     type: ShelterEntity,
@@ -45,6 +41,21 @@ export class ShelterController {
       ...createShelterDto,
       author: id,
     });
+  }
+
+  @Put(':id')
+  @ApiCreatedResponse({
+    type: ShelterEntity,
+    description: 'The updated shelter',
+  })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  async update(
+    @MyId() id: string,
+    @Body() createShelterDto: CreateShelterDto,
+    @MyId() author: string,
+  ): Promise<ShelterEntity> {
+    return this.shelterService.update(id, { ...createShelterDto, author });
   }
 
   @Get()
@@ -68,6 +79,11 @@ export class ShelterController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ShelterEntityJsonLd> {
     return this.shelterService.findOne(id);
+  }
+
+  @Get(':id/history')
+  async findChanges(@Param('id') id: string): Promise<ShelterEntityJsonLd> {
+    return this.shelterService.findChanges(id);
   }
 }
 function ApiModelPropertyOptional() {

@@ -26,7 +26,6 @@ export class ShelterEntity implements Shelter {
     Object.assign(this, partial);
   }
 
-  // TODO: Add the rest of the properties
   province: string;
   region: string;
   url: string;
