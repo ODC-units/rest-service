@@ -8,14 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Service {
-  id                    String                  @id
-  amenities             ShelterService[]
-  ShelterServiceArchive ShelterServiceArchive[]
+model service {
+  id                    String                    @id
+  amenities             shelter_service[]
+  ShelterServiceArchive shelter_service_archive[]
 }
 
-model Shelter {
-  id        String           @id @default(cuid())
+model shelter {
+  id        String            @id @default(cuid())
   name      String
   province  String
   region    String
@@ -23,22 +23,22 @@ model Shelter {
   latitude  Float
   longitude Float
   author    String
-  createdAt DateTime         @default(now())
-  amenities ShelterService[]
+  createdAt DateTime          @default(now())
+  amenities shelter_service[]
 }
 
-model ShelterService {
+model shelter_service {
   shelterId String
   serviceId String
   value     String
-  shelter   Shelter @relation(fields: [shelterId], references: [id])
-  service   Service @relation(fields: [serviceId], references: [id])
+  shelter   shelter @relation(fields: [shelterId], references: [id])
+  service   service @relation(fields: [serviceId], references: [id])
 
   @@id([shelterId, serviceId])
 }
 
-model ShelterArchive {
-  id        String                  @default(cuid())
+model shelter_archive {
+  id        String                    @default(cuid())
   name      String
   province  String
   region    String
@@ -46,19 +46,19 @@ model ShelterArchive {
   latitude  Float
   longitude Float
   author    String
-  createdAt DateTime                @default(now())
-  amenities ShelterServiceArchive[]
+  createdAt DateTime                  @default(now())
+  amenities shelter_service_archive[]
 
   @@id([id, createdAt])
 }
 
-model ShelterServiceArchive {
+model shelter_service_archive {
   shelterId String
   date      DateTime
   serviceId String
   value     String
-  shelter   ShelterArchive @relation(fields: [shelterId, date], references: [id, createdAt])
-  service   Service        @relation(fields: [serviceId], references: [id])
+  shelter   shelter_archive @relation(fields: [shelterId, date], references: [id, createdAt])
+  service   service         @relation(fields: [serviceId], references: [id])
 
   @@id([shelterId, date, serviceId])
 }

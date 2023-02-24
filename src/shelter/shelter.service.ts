@@ -23,13 +23,17 @@ export class ShelterService {
         },
       });
 
+      console.log(shelters);
+
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
   async findOne(id: string): Promise<ShelterEntityJsonLd> {
+    console.log(id);
     try {
       const shelter = await this.prismaService.shelter.findUnique({
         where: {
@@ -42,13 +46,14 @@ export class ShelterService {
 
       return new ShelterEntityJsonLd([shelter]);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
   async findChanges(id: string): Promise<ShelterEntityJsonLd> {
     try {
-      const shelters = await this.prismaService.shelterArchive.findMany({
+      const shelters = await this.prismaService.shelter_archive.findMany({
         where: {
           id,
         },
@@ -90,7 +95,7 @@ export class ShelterService {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const createdShelterArchive =
-        await this.prismaService.shelterArchive.create({
+        await this.prismaService.shelter_archive.create({
           data: {
             id: createdShelter.id,
             createdAt: createdShelter.createdAt,
@@ -101,8 +106,11 @@ export class ShelterService {
           },
         });
 
+      console.log(createdShelter);
+
       return new ShelterEntity(createdShelter);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -120,7 +128,7 @@ export class ShelterService {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [deleted, updatedShelter, created] =
         await this.prismaService.$transaction([
-          this.prismaService.shelterService.deleteMany({
+          this.prismaService.shelter_service.deleteMany({
             where: {
               shelterId: updateShelterDto.id,
             },
@@ -136,7 +144,7 @@ export class ShelterService {
               },
             },
           }),
-          this.prismaService.shelterArchive.create({
+          this.prismaService.shelter_archive.create({
             data: {
               id: updateShelterDto.id,
               ...updateShelterDto,

@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Shelter, ShelterService } from '@prisma/client';
+import {
+  shelter as Shelter,
+  shelter_service as ShelterService,
+} from '@prisma/client';
 
 export class ShelterEntity implements Shelter {
   @ApiProperty({
