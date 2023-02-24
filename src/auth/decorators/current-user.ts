@@ -1,8 +1,8 @@
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { AuthorizedRequest } from '../types';
 
-export const MyId = createParamDecorator<string>(
-  () =>
-    // const request: AuthorizedRequest = ctx.switchToHttp().getRequest();
+export const MyId = createParamDecorator<string>((_, ctx: ExecutionContext) => {
+  const request: AuthorizedRequest = ctx.switchToHttp().getRequest();
 
-    'carlos',
-);
+  return request.auth.name;
+});

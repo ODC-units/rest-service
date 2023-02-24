@@ -23,17 +23,13 @@ export class ShelterService {
         },
       });
 
-      console.log(shelters);
-
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
   async findOne(id: string): Promise<ShelterEntityJsonLd> {
-    console.log(id);
     try {
       const shelter = await this.prismaService.shelter.findUnique({
         where: {
@@ -46,7 +42,6 @@ export class ShelterService {
 
       return new ShelterEntityJsonLd([shelter]);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -80,8 +75,8 @@ export class ShelterService {
   async create(createShelterDto: CreateShelterDto): Promise<ShelterEntity> {
     try {
       const amenities = createShelterDto.amenities.map((shelterService) => ({
-        serviceId: shelterService.serviceId,
-        value: shelterService.value,
+        serviceAttribute: shelterService.serviceAttribute,
+        serviceValue: shelterService.serviceValue,
       }));
 
       const createdShelter = await this.prismaService.shelter.create({
@@ -106,11 +101,8 @@ export class ShelterService {
           },
         });
 
-      console.log(createdShelter);
-
       return new ShelterEntity(createdShelter);
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -121,8 +113,8 @@ export class ShelterService {
   ): Promise<ShelterEntity> {
     try {
       const amenities = updateShelterDto.amenities.map((shelterService) => ({
-        serviceId: shelterService.serviceId,
-        value: shelterService.value,
+        serviceAttribute: shelterService.serviceAttribute,
+        serviceValue: shelterService.serviceValue,
       }));
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -157,6 +149,7 @@ export class ShelterService {
 
       return new ShelterEntity(updatedShelter);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }

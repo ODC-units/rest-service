@@ -8,12 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model service {
-  id                    String                    @id
-  amenities             shelter_service[]
-  ShelterServiceArchive shelter_service_archive[]
-}
-
 model shelter {
   id        String            @id @default(cuid())
   name      String
@@ -28,13 +22,12 @@ model shelter {
 }
 
 model shelter_service {
-  shelterId String
-  serviceId String
-  value     String
-  shelter   shelter @relation(fields: [shelterId], references: [id])
-  service   service @relation(fields: [serviceId], references: [id])
+  shelterId        String
+  serviceAttribute String
+  serviceValue     String
+  shelter          shelter @relation(fields: [shelterId], references: [id])
 
-  @@id([shelterId, serviceId])
+  @@id([shelterId, serviceAttribute])
 }
 
 model shelter_archive {
@@ -53,12 +46,11 @@ model shelter_archive {
 }
 
 model shelter_service_archive {
-  shelterId String
-  date      DateTime
-  serviceId String
-  value     String
-  shelter   shelter_archive @relation(fields: [shelterId, date], references: [id, createdAt])
-  service   service         @relation(fields: [serviceId], references: [id])
+  shelterId        String
+  serviceAttribute String
+  serviceValue     String
+  date             DateTime
+  shelter          shelter_archive @relation(fields: [shelterId, date], references: [id, createdAt])
 
-  @@id([shelterId, date, serviceId])
+  @@id([shelterId, serviceAttribute, date])
 }

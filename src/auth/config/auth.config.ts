@@ -5,6 +5,7 @@ import { CommonAuthConfig } from '../types';
 export class AuthConfig {
   static async getServiceAccount(): Promise<ServiceAccount> {
     const client = new SecretManagerServiceClient();
+
     const [versionData] = await client.accessSecretVersion({
       name: `projects/opendata-units/secrets/firebase-credentials/versions/latest`,
     });
