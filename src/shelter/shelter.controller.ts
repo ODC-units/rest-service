@@ -1,20 +1,20 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
   Param,
-  UseGuards,
-  Query,
+  Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/guard/auth.guard';
-import { ApiBearerAuth, ApiCreatedResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { MyId } from 'src/auth/decorators/current-user';
-import { ShelterService } from './shelter.service';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { CreateShelterDto } from './dto/create-shelter.dto';
+import { Service } from './entities/service.entity';
 import { ShelterEntity } from './entities/shelter.entity';
 import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
+import { ShelterService } from './shelter.service';
 
 @Controller({
   version: '1',
@@ -56,21 +56,8 @@ export class ShelterController {
   }
 
   @Get()
-  @ApiQuery({
-    name: 'region',
-    required: false,
-    type: String,
-  })
-  @ApiQuery({
-    name: 'province',
-    required: false,
-    type: String,
-  })
-  async findAll(
-    @Query('region') region?: string,
-    @Query('province') province?: string,
-  ): Promise<ShelterEntityJsonLd> {
-    return this.shelterService.findAll(region, province);
+  async findAll(): Promise<ShelterEntityJsonLd> {
+    return this.shelterService.findAll();
   }
 
   @Get(':id')
@@ -81,5 +68,11 @@ export class ShelterController {
   @Get(':id/history')
   async findChanges(@Param('id') id: string): Promise<ShelterEntityJsonLd> {
     return this.shelterService.findChanges(id);
+  }
+
+  @Get('/get/services')
+  async findServices(): Promise<Service[]> {
+    console.log('findServices');
+    return this.shelterService.findServices();
   }
 }

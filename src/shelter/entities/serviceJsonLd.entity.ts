@@ -6,7 +6,9 @@ class ServiceEntityJsonLd {
     this['@type'] = 'LocationFeatureSpecification';
     this['schema:name'] = service.serviceAttribute;
     this['schema:value'] = service.serviceValue;
-    this['schema:url'] = service.serviceAttribute;
+    this[
+      'schema:url'
+    ] = `https://storage.cloud.google.com/vocabularies/openshelterapi/vocabularies/${service.serviceAttribute}.json`;
   }
 
   '@type': string;

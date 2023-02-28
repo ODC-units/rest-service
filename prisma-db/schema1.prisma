@@ -1,0 +1,41 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../node_modules/prisma/client-db"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model shelter {
+  id        String            @id @default(cuid())
+  name      String
+  province  String
+  region    String
+  url       String
+  latitude  Float
+  longitude Float
+  author    String
+  createdAt DateTime          @default(now())
+  amenities shelter_service[]
+}
+
+model shelter_service {
+  shelterId        String
+  serviceAttribute String
+  serviceValue     String
+  shelter          shelter @relation(fields: [shelterId], references: [id])
+  service          service @relation(fields: [serviceAttribute, serviceValue], references: [attribute, value])
+
+  @@id([shelterId, serviceAttribute, serviceValue])
+}
+
+model service {
+  attribute String
+  value     String
+  shelters  shelter_service[]
+
+  @@id([attribute, value])
+}

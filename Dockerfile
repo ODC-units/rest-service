@@ -6,7 +6,8 @@ WORKDIR /app
 
 COPY package.json .
 COPY yarn.lock .
-COPY prisma ./prisma
+COPY prisma-db ./prisma-db
+COPY prisma-db-archive ./prisma-db-archive
 
 # Install openssl (in order to fix a bug with Prisma)
 RUN apt-get update 
@@ -35,7 +36,8 @@ RUN apt-get install -y openssl
 # Copy app source code
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma-db ./prisma-db
+COPY --from=builder /app/prisma-db-archive ./prisma-db-archive
 COPY --from=builder /app/dist ./dist
 
 # Expose the listening port of your app

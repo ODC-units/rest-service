@@ -7,7 +7,7 @@ export class AuthConfig {
     const client = new SecretManagerServiceClient();
 
     const [versionData] = await client.accessSecretVersion({
-      name: `projects/opendata-units/secrets/firebase-credentials/versions/latest`,
+      name: `projects/opendata-units/secrets/firebase-secrets/versions/latest`,
     });
 
     const secret = versionData.payload?.data?.toString() || '';

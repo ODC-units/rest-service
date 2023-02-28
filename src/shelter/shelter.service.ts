@@ -1,23 +1,21 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaServiceDb } from 'src/prisma/prismadb.service';
+import { PrismaServiceDbArchive } from 'src/prisma/prismadbarchive.service';
 import { CreateShelterDto } from './dto/create-shelter.dto';
+import { Service } from './entities/service.entity';
 import { ShelterEntity } from './entities/shelter.entity';
 import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
 
 @Injectable()
 export class ShelterService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaServiceDb: PrismaServiceDb,
+    private prismaServiceDbArchive: PrismaServiceDbArchive,
+  ) {}
 
-  async findAll(
-    region?: string,
-    province?: string,
-  ): Promise<ShelterEntityJsonLd> {
+  async findAll(): Promise<ShelterEntityJsonLd> {
     try {
-      const shelters = await this.prismaService.shelter.findMany({
-        where: {
-          region,
-          province,
-        },
+      const shelters = await this.prismaServiceDb.shelter.findMany({
         include: {
           amenities: true,
         },
@@ -31,7 +29,7 @@ export class ShelterService {
 
   async findOne(id: string): Promise<ShelterEntityJsonLd> {
     try {
-      const shelter = await this.prismaService.shelter.findUnique({
+      const shelter = await this.prismaServiceDb.shelter.findUnique({
         where: {
           id,
         },
@@ -48,17 +46,18 @@ export class ShelterService {
 
   async findChanges(id: string): Promise<ShelterEntityJsonLd> {
     try {
-      const shelters = await this.prismaService.shelter_archive.findMany({
-        where: {
-          id,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          amenities: true,
-        },
-      });
+      const shelters =
+        await this.prismaServiceDbArchive.shelter_archive.findMany({
+          where: {
+            id,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            amenities: true,
+          },
+        });
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
@@ -66,12 +65,31 @@ export class ShelterService {
     }
   }
 
-  /**
-   * Create a shelter
-   * @param {CreateShelterDto} createShelterDto - The shelter to create
-   * @return {Promise<ShelterEntity>} The created shelter
-   * @throws {InternalServerErrorException} If an error occurs
-   */
+  async findServices(): Promise<Service[]> {
+    try {
+      const services = await this.prismaServiceDb.service.findMany();
+
+      const mappedServices = services.reduce((acc, curr) => {
+        if (!acc[curr.attribute]) {
+          acc[curr.attribute] = [curr.value];
+        } else {
+          acc[curr.attribute].push(curr.value);
+        }
+        return acc;
+      }, {});
+
+      const service = Object.keys(mappedServices).map((key) => ({
+        serviceAttribute: key,
+        serviceValue: mappedServices[key],
+      }));
+
+      return service;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
   async create(createShelterDto: CreateShelterDto): Promise<ShelterEntity> {
     try {
       const amenities = createShelterDto.amenities.map((shelterService) => ({
@@ -79,7 +97,7 @@ export class ShelterService {
         serviceValue: shelterService.serviceValue,
       }));
 
-      const createdShelter = await this.prismaService.shelter.create({
+      const createdShelter = await this.prismaServiceDb.shelter.create({
         data: {
           ...createShelterDto,
           amenities: {
@@ -90,7 +108,7 @@ export class ShelterService {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const createdShelterArchive =
-        await this.prismaService.shelter_archive.create({
+        await this.prismaServiceDbArchive.shelter_archive.create({
           data: {
             id: createdShelter.id,
             createdAt: createdShelter.createdAt,
@@ -103,6 +121,7 @@ export class ShelterService {
 
       return new ShelterEntity(createdShelter);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -119,13 +138,13 @@ export class ShelterService {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [deleted, updatedShelter, created] =
-        await this.prismaService.$transaction([
-          this.prismaService.shelter_service.deleteMany({
+        await this.prismaServiceDb.$transaction([
+          this.prismaServiceDb.shelter_service.deleteMany({
             where: {
               shelterId: updateShelterDto.id,
             },
           }),
-          this.prismaService.shelter.update({
+          this.prismaServiceDb.shelter.update({
             where: {
               id: updateShelterDto.id,
             },
@@ -136,7 +155,7 @@ export class ShelterService {
               },
             },
           }),
-          this.prismaService.shelter_archive.create({
+          this.prismaServiceDbArchive.shelter_archive.create({
             data: {
               id: updateShelterDto.id,
               ...updateShelterDto,

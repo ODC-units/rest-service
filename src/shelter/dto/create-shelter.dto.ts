@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   shelter as Shelter,
   shelter_service as ShelterService,
-} from '@prisma/client';
+} from 'prisma/client-db';
 
 export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
   @ApiProperty({

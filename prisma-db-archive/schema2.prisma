@@ -1,33 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  ssl      = true
+  provider      = "prisma-client-js"
+  output        = "../node_modules/prisma/client-db-archive"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model shelter {
-  id        String            @id @default(cuid())
-  name      String
-  province  String
-  region    String
-  url       String
-  latitude  Float
-  longitude Float
-  author    String
-  createdAt DateTime          @default(now())
-  amenities shelter_service[]
-}
-
-model shelter_service {
-  shelterId        String
-  serviceAttribute String
-  serviceValue     String
-  shelter          shelter @relation(fields: [shelterId], references: [id])
-
-  @@id([shelterId, serviceAttribute])
+  url      = env("DATABASE_URL_ARCHIVE")
 }
 
 model shelter_archive {
@@ -51,6 +30,15 @@ model shelter_service_archive {
   serviceValue     String
   date             DateTime
   shelter          shelter_archive @relation(fields: [shelterId, date], references: [id, createdAt])
+  service          service         @relation(fields: [serviceAttribute, serviceValue], references: [attribute, value])
 
-  @@id([shelterId, serviceAttribute, date])
+  @@id([shelterId, serviceAttribute, serviceValue, date])
+}
+
+model service {
+  attribute String
+  value     String
+  shelters  shelter_service_archive[]
+
+  @@id([attribute, value])
 }
