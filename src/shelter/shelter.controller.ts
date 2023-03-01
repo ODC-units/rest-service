@@ -5,9 +5,10 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { MyId } from 'src/auth/decorators/current-user';
 import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { CreateShelterDto } from './dto/create-shelter.dto';
@@ -56,7 +57,20 @@ export class ShelterController {
   }
 
   @Get()
-  async findAll(): Promise<ShelterEntityJsonLd> {
+  @ApiQuery({
+    name: 'region',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'province',
+    required: false,
+    type: String,
+  })
+  async findAll(
+    @Query('region') region?: string,
+    @Query('province') province?: string,
+  ): Promise<ShelterEntityJsonLd> {
     return this.shelterService.findAll();
   }
 

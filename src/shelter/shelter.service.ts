@@ -13,9 +13,16 @@ export class ShelterService {
     private prismaServiceDbArchive: PrismaServiceDbArchive,
   ) {}
 
-  async findAll(): Promise<ShelterEntityJsonLd> {
+  async findAll(
+    region?: string,
+    province?: string,
+  ): Promise<ShelterEntityJsonLd> {
     try {
       const shelters = await this.prismaServiceDb.shelter.findMany({
+        where: {
+          region: region ? region : undefined,
+          province: province ? province : undefined,
+        },
         include: {
           amenities: true,
         },
