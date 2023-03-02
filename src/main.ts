@@ -12,7 +12,9 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  app.enableCors({ origin: 'http://localhost:3000' });
+  app.enableCors({
+    origin: 'https://web-service-hnlijallya-oa.a.run.app',
+  });
   app.enableVersioning();
 
   const document = SwaggerModule.createDocument(app, config);
