@@ -20,8 +20,8 @@ export class ShelterService {
     try {
       const shelters = await this.prismaServiceDb.shelter.findMany({
         where: {
-          region: region ? region : undefined,
-          province: province ? province : undefined,
+          region: region,
+          province: province,
         },
         include: {
           amenities: true,

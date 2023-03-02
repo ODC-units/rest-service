@@ -71,7 +71,7 @@ export class ShelterController {
     @Query('region') region?: string,
     @Query('province') province?: string,
   ): Promise<ShelterEntityJsonLd> {
-    return this.shelterService.findAll();
+    return this.shelterService.findAll(region, province);
   }
 
   @Get(':id')

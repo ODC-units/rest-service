@@ -24,7 +24,7 @@ class ShelterEntityJsonLdHelper {
       'geojson:coordinates': [shelter.latitude, shelter.longitude],
     };
     this['schema:author'] = shelter.author;
-    this['schema:createdAt'] = shelter.createdAt;
+    this['schema:uploadAt'] = shelter.createdAt;
   }
 
   '@type': string;
