@@ -74,7 +74,11 @@ export class ShelterService {
 
   async findServices(): Promise<Service[]> {
     try {
-      const services = await this.prismaServiceDb.service.findMany();
+      const services = await this.prismaServiceDb.service.findMany({
+        orderBy: {
+          attribute: 'asc',
+        },
+      });
 
       const mappedServices = services.reduce((acc, curr) => {
         if (!acc[curr.attribute]) {

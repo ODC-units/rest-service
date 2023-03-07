@@ -5,15 +5,11 @@ import {
 } from 'prisma/client-db';
 
 export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
-  @ApiProperty({
-    description: 'The ID of the shelter',
-    example: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-  })
   id: string;
 
   @ApiProperty({
     description: 'The name of the shelter',
-    example: 'Rifugio Carestiato',
+    example: 'Rifugio Bruto Carestiato',
   })
   name: string;
 
@@ -31,31 +27,27 @@ export class CreateShelterDto implements Omit<Shelter, 'createdAt'> {
 
   @ApiProperty({
     description: 'The services offered by the shelter',
-    example: '[{ "serviceId": "Beds", "value": "true"}]',
+    example: '[{ "serviceAttribute": "Wi-Fi", "serviceValue": "Available"}]',
   })
   amenities: ShelterService[];
 
   @ApiProperty({
-    description: 'The url of the website of the shelter',
-    example: 'www.example.com',
+    description: 'The website of the shelter',
+    example: 'http://www.rifugiocarestiato.com',
   })
   url: string;
 
   @ApiProperty({
     description: 'The latitude of the shelter',
-    example: '46.227638',
+    example: '46.321330',
   })
   latitude: number;
 
   @ApiProperty({
     description: 'The longitude of the shelter',
-    example: '46.227638',
+    example: '12.070394',
   })
   longitude: number;
 
-  @ApiProperty({
-    description: 'The author of the shelter',
-    example: 'John Doe',
-  })
   author: string;
 }

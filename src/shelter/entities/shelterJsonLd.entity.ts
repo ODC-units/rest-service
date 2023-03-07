@@ -17,7 +17,7 @@ class ShelterEntityJsonLd {
       .join(', ')}]`;
     this['dc:creator'] = 'Open Shelter API';
     this['dc:date'] = new Date();
-    this['dc:format'] = '.geojson';
+    this['dc:format'] = '.jsonld';
     this['dc:language'] = 'en';
     this['dc:source'] = 'https://www.openshelterapi.com';
     this['dc:rights'] =

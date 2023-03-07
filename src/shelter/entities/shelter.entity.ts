@@ -6,38 +6,66 @@ import {
 
 export class ShelterEntity implements Shelter {
   @ApiProperty({
-    description: 'The ID of the shelter',
-    example: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+    description: 'The id of the shelter',
+    example: 'zlescxa4z0040s676ui0irrht',
   })
   id: string;
 
   @ApiProperty({
-    description: 'The shelter name',
-    example: 'john.doe@test.com',
+    description: 'The name of the shelter',
+    example: 'Rifugio Bruto Carestiato',
   })
   name: string;
 
   @ApiProperty({
     description: 'The latitude of the shelter',
-    example: 46.227638,
+    example: '46.321330',
   })
   latitude: number;
 
+  @ApiProperty({
+    description: 'The longitude of the shelter',
+    example: '12.070394',
+  })
   longitude: number;
+
+  @ApiProperty({
+    description: 'The province in which the shelter is located',
+    example: 'Belluno',
+  })
+  province: string;
+
+  @ApiProperty({
+    description: 'The region in which the shelter is located',
+    example: 'Veneto',
+  })
+  region: string;
+
+  @ApiProperty({
+    description: 'The website of the shelter',
+    example: 'https://www.rifugiocarestiato.com',
+  })
+  url: string;
+
+  @ApiProperty({
+    description: 'The services offered by the shelter',
+    example: '[{ "serviceAttribute": "Wi-Fi", "serviceValue": "Available"}]',
+  })
+  amenities: ShelterService[];
+
+  @ApiProperty({
+    description: 'The author of the shelter',
+    example: 'test@test.com',
+  })
+  author: string;
+
+  @ApiProperty({
+    description: 'The author of the shelter',
+    example: '2023-03-02T01:35:20.000Z',
+  })
+  createdAt: Date;
 
   constructor(partial: Partial<ShelterEntity>) {
     Object.assign(this, partial);
   }
-
-  province: string;
-
-  region: string;
-
-  url: string;
-
-  amenities: ShelterService[];
-
-  author: string;
-
-  createdAt: Date;
 }
