@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaServiceDb } from 'src/prisma/prismadb.service';
 import { PrismaServiceDbArchive } from 'src/prisma/prismadbarchive.service';
 import { CreateShelterDto } from './dto/create-shelter.dto';
-import { Service } from './entities/service.entity';
+import { Service, ServiceHelper } from './entities/service.entity';
 import { ShelterEntity } from './entities/shelter.entity';
 import { ShelterEntityJsonLd } from './entities/shelterJsonLd.entity';
 
@@ -16,12 +16,23 @@ export class ShelterService {
   async findAll(
     region?: string,
     province?: string,
+    services?: ServiceHelper[],
   ): Promise<ShelterEntityJsonLd> {
     try {
       const shelters = await this.prismaServiceDb.shelter.findMany({
         where: {
-          region: region,
-          province: province,
+          AND: [
+            { region: region },
+            { province: province },
+            ...services?.map((service) => ({
+              amenities: {
+                some: {
+                  serviceAttribute: service.attribute,
+                  serviceValue: service.value,
+                },
+              },
+            })),
+          ],
         },
         include: {
           amenities: true,
@@ -52,11 +63,12 @@ export class ShelterService {
   }
 
   async findChanges(id: string): Promise<ShelterEntityJsonLd> {
+    console.log(id);
     try {
       const shelters =
         await this.prismaServiceDbArchive.shelter_archive.findMany({
           where: {
-            id,
+            id: id,
           },
           orderBy: {
             createdAt: 'desc',
@@ -65,6 +77,8 @@ export class ShelterService {
             amenities: true,
           },
         });
+
+      console.log(shelters);
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {

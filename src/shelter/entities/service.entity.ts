@@ -12,3 +12,8 @@ export class Service {
   serviceAttribute: string;
   serviceValue: [string];
 }
+
+export class ServiceHelper {
+  attribute: string;
+  value: string;
+}
