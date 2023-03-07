@@ -13,7 +13,8 @@ async function bootstrap() {
     .build();
 
   app.enableCors({
-    origin: 'https://web-service-hnlijallya-oa.a.run.app',
+    //origin: 'https://web-service-hnlijallya-oa.a.run.app',
+    origin: '*',
   });
   app.enableVersioning();
 

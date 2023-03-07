@@ -63,7 +63,6 @@ export class ShelterService {
   }
 
   async findChanges(id: string): Promise<ShelterEntityJsonLd> {
-    console.log(id);
     try {
       const shelters =
         await this.prismaServiceDbArchive.shelter_archive.findMany({
@@ -77,8 +76,6 @@ export class ShelterService {
             amenities: true,
           },
         });
-
-      console.log(shelters);
 
       return new ShelterEntityJsonLd(shelters);
     } catch (error) {
@@ -178,6 +175,7 @@ export class ShelterService {
               amenities: {
                 create: amenities,
               },
+              createdAt: new Date(),
             },
           }),
           this.prismaServiceDbArchive.shelter_archive.create({
@@ -187,6 +185,7 @@ export class ShelterService {
               amenities: {
                 create: amenities,
               },
+              createdAt: new Date(),
             },
           }),
         ]);
