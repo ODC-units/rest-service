@@ -3,7 +3,7 @@ import { ShelterEntity } from './shelter.entity';
 import { ShelterEntityJsonLdHelper } from './shelterJsonLdHelper.entity';
 
 class ShelterEntityJsonLd {
-  constructor(shelters: ShelterEntity[]) {
+  constructor(identifier: string, shelters: ShelterEntity[]) {
     this['@context'] = {
       dc: 'http://purl.org/dc/elements/1.1/',
       schema: 'http://schema.org/',
@@ -16,6 +16,9 @@ class ShelterEntityJsonLd {
       .map((shelters) => shelters.region)
       .join(', ')}]`;
     this['dc:creator'] = 'Open Shelter API';
+    this[
+      'dc:identifier'
+    ] = `https://rest-service-hnlijallya-oa.a.run.app${identifier}`;
     this['dc:date'] = new Date();
     this['dc:format'] = '.jsonld';
     this['dc:language'] = 'en';

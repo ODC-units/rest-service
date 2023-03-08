@@ -17,6 +17,7 @@ export class ShelterService {
     region?: string,
     province?: string,
     services?: ServiceHelper[],
+    request?: Request,
   ): Promise<ShelterEntityJsonLd> {
     try {
       const shelters = await this.prismaServiceDb.shelter.findMany({
@@ -39,13 +40,13 @@ export class ShelterService {
         },
       });
 
-      return new ShelterEntityJsonLd(shelters);
+      return new ShelterEntityJsonLd(request.url, shelters);
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async findOne(id: string): Promise<ShelterEntityJsonLd> {
+  async findOne(id: string, request?: Request): Promise<ShelterEntityJsonLd> {
     try {
       const shelter = await this.prismaServiceDb.shelter.findUnique({
         where: {
@@ -56,13 +57,16 @@ export class ShelterService {
         },
       });
 
-      return new ShelterEntityJsonLd([shelter]);
+      return new ShelterEntityJsonLd(request.url, [shelter]);
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async findChanges(id: string): Promise<ShelterEntityJsonLd> {
+  async findChanges(
+    id: string,
+    request?: Request,
+  ): Promise<ShelterEntityJsonLd> {
     try {
       const shelters =
         await this.prismaServiceDbArchive.shelter_archive.findMany({
@@ -77,7 +81,7 @@ export class ShelterService {
           },
         });
 
-      return new ShelterEntityJsonLd(shelters);
+      return new ShelterEntityJsonLd(request.url, shelters);
     } catch (error) {
       throw new InternalServerErrorException();
     }

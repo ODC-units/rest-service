@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -117,8 +118,9 @@ export class ShelterController {
     @Query('region') region?: string,
     @Query('province') province?: string,
     @Query('services', new ParseServicesPipe()) services?: ServiceHelper[],
+    @Req() request?: Request,
   ): Promise<ShelterEntityJsonLd> {
-    return this.shelterService.findAll(region, province, services);
+    return this.shelterService.findAll(region, province, services, request);
   }
 
   @Get(':id')
@@ -136,8 +138,11 @@ export class ShelterController {
     },
     type: String,
   })
-  async findOne(@Param('id') id: string): Promise<ShelterEntityJsonLd> {
-    return this.shelterService.findOne(id);
+  async findOne(
+    @Param('id') id: string,
+    @Req() request?: Request,
+  ): Promise<ShelterEntityJsonLd> {
+    return this.shelterService.findOne(id, request);
   }
 
   @Get(':id/history')
@@ -155,8 +160,11 @@ export class ShelterController {
     },
     type: String,
   })
-  async findChanges(@Param('id') id: string): Promise<ShelterEntityJsonLd> {
-    return this.shelterService.findChanges(id);
+  async findChanges(
+    @Param('id') id: string,
+    @Req() request?: Request,
+  ): Promise<ShelterEntityJsonLd> {
+    return this.shelterService.findChanges(id, request);
   }
 
   @ApiExcludeEndpoint()
